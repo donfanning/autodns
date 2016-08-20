@@ -8,9 +8,7 @@ import argparse
 def get_dns_host(instances):
     """ Get DNS list with PublicIpAddress """
     from tabulate import tabulate
-    keys =instances.keys()
-    values =instances.values()
-    print(tabulate({"IP": values, "Name": keys}))
+    print(tabulate({"IP": instances.values(), "Name": instances.keys()}))
 
 
 def create_dns_register(consul, instances):
