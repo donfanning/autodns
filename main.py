@@ -16,6 +16,7 @@ def create_dns_register(consul, instances):
     for key, value in instances.iteritems():
         data = {"Datacenter": "dc1", "Address": value, "Node": key}
         requests.put("http://{}/v1/catalog/register".format(consul), json=data)
+        print(data)
 
 
 def main():
