@@ -5,6 +5,7 @@ import argparse
 from dns import DNS
 from queue import Queue
 from sg import SecurityGroup, AlreadyExists
+from es import ES
 
 
 def main():
@@ -20,7 +21,11 @@ def main():
     parser.add_argument('--sg_machine', default="")
     parser.add_argument('--sg_enable_ip', default="")
 
+    parser.add_argument('--es_ip', default="")
+    parser.add_argument('--es_domain', default="")
+
     args = parser.parse_args()
+
     if args.sg_machine and args.sg_enable_ip:
         # Enable machine IP on security group for ssh
         sg = SecurityGroup(args.sg_machine, args.sg_enable_ip)
@@ -35,6 +40,12 @@ def main():
         # If --sqs is passed list queues data
         queue = Queue(args.queues)
         queue.print_data(queue.get_sqs_list())
+
+    elif args.es_ip and args.es_domain:
+        es = ES(args.es_ip, args.es_domain)
+        config = es.fetch_domain_config()
+        new_access_list = es.extract_access_list(config)
+        print(es.update_access_list(new_access_list))
     else:
         # Default inserting data on consul
         dns = DNS(args.consul)
