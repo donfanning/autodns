@@ -46,6 +46,7 @@ def main():
         config = es.fetch_domain_config()
         new_access_list = es.extract_access_list(config)
         print(es.update_access_list(new_access_list))
+
     else:
         # Default inserting data on consul
         dns = DNS(args.consul)
