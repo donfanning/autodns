@@ -3,7 +3,16 @@ import boto3
 import requests
 
 from tabulate import tabulate
-from collections import defaultdict
+
+
+def start_dns(args):
+    """ Start Consul objects """
+    try:
+        dns = DNS(args.url)
+        instances = dns.fetch_ec2_instances()
+        dns.create_dns_register(args.url, instances)
+    except requests.exceptions.ConnectionError:
+        raise Exception("Set a working Consul host")
 
 
 class DNS(object):
